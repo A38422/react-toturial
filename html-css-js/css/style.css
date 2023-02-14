@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.search, .result, .enter-infor {
+    border: 1px solid red;
+    padding: 10px;
+    margin: 10px;
+}
+
+.lable-input {
+    display: -webkit-inline-box;
+    min-width: 70px;
+    margin-right: 5px;
+    background-color: #F0F0F0;
+}
+
+.button-danger {
+    background-color: red;
+    color: white;
+    border-color: red;
+    cursor: pointer;
+}
+
+.icon-action {
+    cursor: pointer;
+}
+
+.list {
+    width: 55%;
+    border: 1px solid black;
+}
+
+.list th {
+    background-color: red;
+    color: white;
+}
+
+.item-info {
+    margin: 5px 0 10px 0;
+    height: 30px;
+}
+
+.require:after {
+    content: '*';
+    color: red;
+}
+
+#errorMaSV, #errorTenSV {
+    display: none;
+    color: red;
+    margin-left: 80px;
+}
+
+.not-allowed {
+    cursor: not-allowed;
+}

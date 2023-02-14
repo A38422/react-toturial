@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script type = "text/JavaScript" src = "https://MomentJS.com/downloads/moment.js"></script>
+        <title>Danh sách sinh viên</title>
+    </head>
+
+    <body>
+        <form>
+            <div class="search">
+                <label for="txtTuKhoa" class="lable-input">Từ khóa</label>
+                <input id="txtTuKhoa" name="txtTuKhoa" type="text" placeholder="Từ khóa cần tìm">
+                <button id="btn-search" class="button-danger" onclick="handleSearch()">Tìm kiếm</button>
+            </div>
+
+            <div class="result">
+                <table class="list">   
+                    <!-- <tr>
+                        <th></th>
+                        <th>Mã SV</th>
+                        <th>Tên sinh viên</th>
+                        <th>Ngày sinh</th>
+                        <th>Giới tính</th>
+                        <th>Khoa</th>
+                        <th>Hành động</th>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A12345</td>
+                        <td>Trần Văn A</td>
+                        <td>11/05/2002</td>
+                        <td>Nam</td>
+                        <td>Công nghệ thông tin</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A23456</td>
+                        <td>Nguyễn Thị B</td>
+                        <td>06/07/2002</td>
+                        <td>Nữ</td>
+                        <td>Ngôn ngữ Anh</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A34567</td>
+                        <td>Nguyễn Văn C</td>
+                        <td>01/01/2002</td>
+                        <td>Nam</td>
+                        <td>Truyền thông đa phương tiện</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A45678</td>
+                        <td>Đặng Ngọc D</td>
+                        <td>02/06/2002</td>
+                        <td>Nữ</td>
+                        <td>Kinh tế</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A56789</td>
+                        <td>Nguyễn Tuấn E</td>
+                        <td>15/11/2002</td>
+                        <td>Nam</td>
+                        <td>Công nghệ thông tin</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A67891</td>
+                        <td>Đinh Thị F</td>
+                        <td>11/12/2002</td>
+                        <td>Nữ</td>
+                        <td>Ngôn ngữ Hàn Quốc</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A78912</td>
+                        <td>Nguyễn Thị G</td>
+                        <td>02/04/2002</td>
+                        <td>Nữ</td>
+                        <td>Ngôn ngữ Nhật</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A89123</td>
+                        <td>Nguyễn Đình H</td>
+                        <td>30/01/2002</td>
+                        <td>Nam</td>
+                        <td>Truyền thông đa phương tiện</td>
+                        <td>
+                            <i class='fa fa-edit'></i>
+                            <i class="fa fa-trash"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A91234</td>
+                        <td>Vũ Hoàng J</td>
+                        <td>15/12/2002</td>
+                        <td>Nam</td>
+                        <td>Công nghệ thông tin</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>A14725</td>
+                        <td>Hoàng Thị K</td>
+                        <td>09/04/2002</td>
+                        <td>Nữ</td>
+                        <td>Truyền thông đa phương tiện</td>
+                        <td>
+                            <i class="fa fa-edit icon-action" onclick="handleEdit()"></i>
+                            <i class="fa fa-trash icon-action" onclick="handleRemove()"></i>
+                        </td>
+                    </tr> -->
+                </table>
+            </div>
+
+            <div class="enter-infor">
+                <div class="action">
+                    <button id="btn-add" class="button-danger" onclick="addNewItem()">
+                        Thêm mới
+                    </button>
+                    <button id="btn-edit" class="button-danger not-allowed" onclick="editItem()" disabled="true">
+                        Cập nhật
+                    </button>
+                    <button id="btn-delete" class="button-danger not-allowed" onclick="removeItem()" disabled="true">
+                        Xóa
+                    </button>
+                </div>
+
+                <div class="info">
+                    <div class="item-info">
+                        <label for="txtMaSV" class="lable-input require">Mã SV</label>
+                        <input id="txtMaSV" name="txtMaSV" type="text" required>
+                        <small id="errorMaSV"></small>
+                    </div>
+
+                    <div class="item-info">
+                        <label for="txtTenSV" class="lable-input require">Tên SV</label>
+                        <input id="txtTenSV" name="txtTenSV" type="text" required>
+                        <small id="errorTenSV"></small>
+                    </div>
+                    
+                    <div class="item-info">
+                        <label for="txtNgaySinh" class="lable-input">Ngày sinh</label>
+                        <input id="txtNgaySinh" name="txtNgaySinh" type="date"><br>
+                    </div>
+                    
+                    <div class="item-info">
+                        <label class="lable-input">Giới tính</label>
+                        <input type="radio" id="male" name="rdbGioiTinh" value="male">
+                        <label for="male">Nam</label>
+                        <input type="radio" id="female" name="rdbGioiTinh" value="female">
+                        <label for="female">Nữ</label><br>
+                    </div>
+                    
+                    <div class="item-info">
+                        <label for="drpKhoa" class="lable-input require">Khoa</label>
+                        <select name="drpKhoa" id="drpKhoa" onchange="handleChangeKhoa(this)" required>
+                            <option value="kt">Kinh tế</option>
+                            <option value="nna">Ngôn ngữ Anh</option>
+                            <option value="nnhq">Ngôn ngữ Hàn Quốc</option>
+                            <option value="nnn">Ngôn ngữ Nhật</option>
+                            <option value="cntt">Công nghệ thông tin</option>
+                            <option value="ttdpt">Truyền thông đa phương tiện</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+
+</html>
