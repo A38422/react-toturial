@@ -1,0 +1,81 @@
+.App {
+
+}
+
+.search, .list, .enter-info {
+    border: 1px solid red;
+    padding: 10px;
+    margin: 10px;
+}
+
+.flex-row {
+    display: flex;
+}
+
+.flex-colum {
+    display: flex;
+    flex-direction: column;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+.mr-5 {
+    margin-right: 5px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.ml-5 {
+    margin-left: 5px;
+}
+
+.icon-action {
+    cursor: pointer;
+}
+
+.list table{
+    width: 100%;
+    border: 1px solid black;
+}
+
+.list th {
+    background-color: red;
+    color: white;
+}
+
+.label {
+    /*background-color: #F0F0F0;*/
+}
+
+.button-danger {
+    background-color: red;
+    color: white;
+    border-color: red;
+    cursor: pointer;
+}
+
+.not-allowed {
+    cursor: not-allowed;
+}
+
+.require:after {
+    content: '*';
+    color: red;
+}
+
+.item-info {
+    margin: 5px 0 10px 0;
+    height: 30px;
+}
+
+button:disabled {
+    opacity: 0.6;
+}
+
+.text-error {
+    color: red;
+}
