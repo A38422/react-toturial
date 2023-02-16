@@ -47,7 +47,7 @@ const Board = (props) => {
         }
         setHistory(htr);
 
-        if (checkWin()) {
+        if (checkWin(turn, row, col)) {
             let temp = dataBoard;
             temp.map(i => {
                 i.data.map(j => {
@@ -56,78 +56,222 @@ const Board = (props) => {
             })
             setDataBoard(temp);
             const eResult = document.getElementsByClassName('result')[0];
-            eResult.textContent = checkWin().turn ? `${checkWin().turn} thắng` : 'Hòa';
-            eResult.className = checkWin().turn ? 'text-win' : 'text-draw';
+            eResult.textContent = checkWin(turn, row, col).turn ? `${checkWin(turn, row, col).turn} thắng` : 'Hòa';
+            eResult.className = checkWin(turn, row, col).turn ? 'text-win' : 'text-draw';
         }
     }
 
-    const checkWin = () => {
-        let result = true;
-        for (let i = 0; i < dataBoard.length; i++) {     //duong cheo 1
-            result = result && (dataBoard[i].data[i].value === turn);
-        }
-        if (result) {
-            for (let i = 0; i < dataBoard.length; i++) {
-                let temp = dataBoard;
-                temp[i].data[i].className = 'btn-danger';
-                setDataBoard(temp);
+    // const checkWin = () => {
+    {/*    let result = true;*/}
+    //     for (let i = 0; i < dataBoard.length; i++) {     //duong cheo 1
+    //         result = result && (dataBoard[i].data[i].value === turn);
+    //     }
+    //     if (result) {
+    //         for (let i = 0; i < dataBoard.length; i++) {
+    //             let temp = dataBoard;
+    //             temp[i].data[i].className = 'btn-danger';
+    //             setDataBoard(temp);
+    //         }
+    //
+    //         return {
+    //             result: result,
+    //             turn: turn
+    //         };
+    //     }
+    //
+    //     result = true;
+    //     for (let i = 0; i < dataBoard.length; i++) {  //duong cheo 2
+    //         result = result && (dataBoard[dataBoard.length - 1 - i].data[i].value === turn);
+    //     }
+    //     if (result) {
+    //         for (let i = 0; i < dataBoard.length; i++) {
+    //             let temp = dataBoard;
+    //             temp[temp.length - 1 - i].data[i].className = 'btn-danger';
+    //             setDataBoard(temp);
+    //         }
+    //
+    //         return {
+    //             result: result,
+    //             turn: turn
+    //         };
+    //     }
+    //
+    //     for (let i = 0; i < dataBoard.length; i++) {
+    //         result = true;
+    //         for (let j = 0; j < dataBoard.length; j++) {      //dong
+    //             result = result && (dataBoard[i].data[j].value === turn);
+    //         }
+    //         if (result) {
+    //             for (let j = 0; j < dataBoard.length; j++) {
+    //                 let temp = dataBoard;
+    //                 temp[i].data[j].className = 'btn-danger';
+    //                 setDataBoard(temp);
+    //             }
+    //
+    //             return {
+    //                 result: result,
+    //                 turn: turn
+    //             };
+    //         }
+    //
+    //         result = true;
+    //         for (let j = 0; j < dataBoard.length; j++) {      //cot
+    //             result = result && (dataBoard[j].data[i].value === turn);
+    //         }
+    //         if (result) {
+    //             for (let j = 0; j < dataBoard.length; j++) {
+    //                 let temp = dataBoard;
+    //                 temp[j].data[i].className = 'btn-danger';
+    //                 setDataBoard(temp);
+    //             }
+    //             return {
+    //                 result: result,
+    //                 turn: turn
+    //             };
+    //         }
+    //     }
+    //
+    //     let checkDraw = true;
+    //     for (let i = 0; i < dataBoard.length; i++) {
+    //         for (let j = 0; j < dataBoard.length; j++) {
+    //             if (!dataBoard[i].data[j].value) checkDraw = false;
+    //         }
+    //     }
+    //     return checkDraw;
+    // }
+
+    const checkWin = (turn, row, col) => {
+        const sizeWin = 3;
+
+        // Kiểm tra hàng ngang
+        let count = 0;
+        let arrIndex = [];
+        for (let i = col; i >= 0; i--) {
+            if (dataBoard[row].data[i].value === turn) {
+                count++;
+                arrIndex.push({row: row, col: i});
+            } else {
+                break;
             }
+        }
+        for (let i = col + 1; i < dataBoard.length; i++) {
+            if (dataBoard[row].data[i].value === turn) {
+                count++;
+                arrIndex.push({row: row, col: i});
+            } else {
+                break;
+            }
+        }
+        if (count >= sizeWin) {
+            let temp = dataBoard;
+            arrIndex.forEach(i => {
+                temp[i.row].data[i.col].className = 'btn-danger';
+            });
+            setDataBoard(temp);
+
             return {
-                result: result,
+                result: true,
                 turn: turn
             };
         }
 
-        result = true;
-        for (let i = 0; i < dataBoard.length; i++) {  //duong cheo 2
-            result = result && (dataBoard[dataBoard.length - 1 - i].data[i].value === turn);
-        }
-        if (result) {
-            for (let i = 0; i < dataBoard.length; i++) {
-                let temp = dataBoard;
-                temp[temp.length - 1 - i].data[i].className = 'btn-danger';
-                setDataBoard(temp);
+        // Kiểm tra hàng dọc
+        count = 0;
+        arrIndex = [];
+        for (let i = row; i >= 0; i--) {
+            if (dataBoard[i].data[col].value === turn) {
+                count++;
+                arrIndex.push({row: i, col: col});
+            } else {
+                break;
             }
+        }
+        for (let i = row + 1; i < dataBoard.length; i++) {
+            if (dataBoard[i].data[col].value === turn) {
+                count++;
+                arrIndex.push({row: i, col: col});
+            } else {
+                break;
+            }
+        }
+        if (count >= sizeWin) {
+            let temp = dataBoard;
+            arrIndex.forEach(i => {
+                temp[i.row].data[i.col].className = 'btn-danger';
+            });
+            setDataBoard(temp);
+
             return {
-                result: result,
+                result: true,
                 turn: turn
             };
         }
 
-        for (let i = 0; i < dataBoard.length; i++) {
-            result = true;
-            for (let j = 0; j < dataBoard.length; j++) {      //dong
-                result = result && (dataBoard[i].data[j].value === turn);
-            }
-            if (result) {
-                for (let j = 0; j < dataBoard.length; j++) {
-                    let temp = dataBoard;
-                    temp[i].data[j].className = 'btn-danger';
-                    setDataBoard(temp);
-                }
-                return {
-                    result: result,
-                    turn: turn
-                };
-            }
-
-            result = true;
-            for (let j = 0; j < dataBoard.length; j++) {      //cot
-                result = result && (dataBoard[j].data[i].value === turn);
-            }
-            if (result) {
-                for (let j = 0; j < dataBoard.length; j++) {
-                    let temp = dataBoard;
-                    temp[j].data[i].className = 'btn-danger';
-                    setDataBoard(temp);
-                }
-                return {
-                    result: result,
-                    turn: turn
-                };
+        // Kiểm tra đường chéo chính
+        count = 0;
+        arrIndex = [];
+        for (let i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (dataBoard[i].data[j].value === turn) {
+                count++;
+                arrIndex.push({row: i, col: j});
+            } else {
+                break;
             }
         }
+        for (let i = row + 1, j = col + 1; i < dataBoard.length && j < dataBoard.length; i++, j++) {
+            if (dataBoard[i].data[j].value === turn) {
+                count++;
+                arrIndex.push({row: i, col: j});
+            } else {
+                break;
+            }
+        }
+        if (count >= sizeWin) {
+            let temp = dataBoard;
+            arrIndex.forEach(i => {
+                temp[i.row].data[i.col].className = 'btn-danger';
+            });
+            setDataBoard(temp);
 
+            return {
+                result: true,
+                turn: turn
+            };
+        }
+
+        // Kiểm tra đường chéo phụ
+        count = 0;
+        arrIndex = [];
+        for (let i = row, j = col; i >= 0 && j < dataBoard.length; i--, j++) {
+            if (dataBoard[i].data[j].value === turn) {
+                count++;
+                arrIndex.push({row: i, col: j});
+            } else {
+                break;
+            }
+        }
+        for (let i = row + 1, j = col - 1; i < dataBoard.length && j >= 0; i++, j--) {
+            if (dataBoard[i].data[j].value === turn) {
+                count++;
+                arrIndex.push({row: i, col: j});
+            } else {
+                break;
+            }
+        }
+        if (count >= sizeWin) {
+            let temp = dataBoard;
+            arrIndex.forEach(i => {
+                temp[i.row].data[i.col].className = 'btn-danger';
+            });
+            setDataBoard(temp);
+
+            return {
+                result: true,
+                turn: turn
+            };
+        }
+
+        // Kiểm tra hòa
         let checkDraw = true;
         for (let i = 0; i < dataBoard.length; i++) {
             for (let j = 0; j < dataBoard.length; j++) {
@@ -207,5 +351,4 @@ const Board = (props) => {
         </div>
     )
 }
-
 export default Board;
