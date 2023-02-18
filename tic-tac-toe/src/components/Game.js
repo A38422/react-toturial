@@ -21,11 +21,6 @@ const Game = () => {
 
     const handleChangeInput = (e) => {
         e.target.value = Math.abs(Number(e.target.value));
-        if (e.target.value === '0'
-            // || e.target.value === '1'
-            // || e.target.value === '2'
-        )
-            e.target.value = '';
     }
 
     const handleKeyDown = (e) => {
