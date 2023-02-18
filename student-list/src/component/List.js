@@ -2,11 +2,11 @@ import React from 'react';
 
 const List = (props) => {
     return (
-        <div style={{height: "200px", overflow: "auto"}}>
+        <div>
             <table className={props.className} style={props.style}>
                 <thead>
                 <tr>
-                    {props.checkbox ? <th></th> : null}
+                    <th></th>
                     {props.header.map((value, index) => {
                         return <th key={index}>{value}</th>
                     })}
@@ -16,12 +16,13 @@ const List = (props) => {
                 <tbody>
                     {props.dataTable.map((value, index) => {
                         return <tr key={index}>
-                            {props.checkbox
-                                ? <td><input type="checkbox"/></td>
-                                : null
-                            }
                             {Object.keys(value).map(key => {
-                                return <td key={key}>{value[key]}</td>
+                                if (key === 'checked') {
+                                    return <td key={key}><input type="checkbox"
+                                                      checked={value[key]}
+                                                      onChange={() => props.changeChecked(value)}/></td>
+                                }
+                                return <td key={`${key}${index}`}>{value[key]}</td>
                             })}
                             <td>
                                 <i className="fa fa-edit icon-action mr-5"
@@ -43,6 +44,7 @@ List.defaultProps = {
     header: [],
     dataTable: [],
     editRow: () => {},
-    removeRow: () => {}
+    removeRow: () => {},
+    handleChangeChecked: () => {}
 }
 export default List;

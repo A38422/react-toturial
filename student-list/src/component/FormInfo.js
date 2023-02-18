@@ -22,7 +22,7 @@ const FormInfo = (props) => {
         tenSV: '',
         ngaySinh: '',
         gioiTinh: '',
-        khoa: ''
+        khoa: 'kt'
     }
 
     const defaultErrorInput = {
@@ -135,6 +135,14 @@ const FormInfo = (props) => {
         return '';
     }
 
+    const handleSubmit = () => {
+        if (props.status === 'add') {
+            addItem();
+        } else if (props.status === 'edit') {
+            editItem();
+        }
+    }
+
     useEffect(() => {
         if (props.dataEdit) {
             const data = props.dataEdit;
@@ -165,32 +173,6 @@ const FormInfo = (props) => {
 
     return (
         <>
-            <div className="action">
-                <button className={disables.btnAdd
-                                    ? 'not-allowed button-danger mr-5'
-                                    : 'button-danger mr-5'}
-                        disabled={disables.btnAdd}
-                        onClick={addItem}>
-                    Thêm mới
-                </button>
-
-                <button className={disables.btnEdit
-                                    ? 'not-allowed button-danger mr-5'
-                                    : 'button-danger mr-5'}
-                        disabled={disables.btnEdit}
-                        onClick={editItem}>
-                    Cập nhật
-                </button>
-
-                <button className={disables.btnRemove
-                                    ? 'not-allowed button-danger'
-                                    : 'button-danger'}
-                        disabled={disables.btnRemove}
-                        onClick={removeItem}>
-                    Xóa
-                </button>
-            </div>
-
             <div className="info">
                 <div className="item-info">
                     <Input label="Mã SV"
@@ -253,6 +235,13 @@ const FormInfo = (props) => {
                         <option value="ttdpt">Truyền thông đa phương tiện</option>
                     </select>
                 </div>
+            </div>
+
+            <div className="action">
+                <button className='button-danger mr-5'
+                        onClick={handleSubmit}>
+                    Xác nhận
+                </button>
             </div>
         </>
     )

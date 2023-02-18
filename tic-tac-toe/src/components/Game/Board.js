@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Square from "./Square";
 
 const Board = (props) => {
-    const [dataBoard, setDataBoard] =useState(() => {
+    const [dataBoard, setDataBoard] = useState(() => {
         let board = [];
         for (let i = 0; i < props.sizeBoard; i++) {
             board.push({id: i, data: []});
@@ -51,7 +51,7 @@ const Board = (props) => {
             let temp = dataBoard;
             temp.map(i => {
                 i.data.map(j => {
-                   j.disabled = true;
+                    j.disabled = true;
                 });
             })
             setDataBoard(temp);
@@ -60,85 +60,6 @@ const Board = (props) => {
             eResult.className = checkWin(turn, row, col).turn ? 'text-win' : 'text-draw';
         }
     }
-
-    // const checkWin = () => {
-    {/*    let result = true;*/}
-    //     for (let i = 0; i < dataBoard.length; i++) {     //duong cheo 1
-    //         result = result && (dataBoard[i].data[i].value === turn);
-    //     }
-    //     if (result) {
-    //         for (let i = 0; i < dataBoard.length; i++) {
-    //             let temp = dataBoard;
-    //             temp[i].data[i].className = 'btn-danger';
-    //             setDataBoard(temp);
-    //         }
-    //
-    //         return {
-    //             result: result,
-    //             turn: turn
-    //         };
-    //     }
-    //
-    //     result = true;
-    //     for (let i = 0; i < dataBoard.length; i++) {  //duong cheo 2
-    //         result = result && (dataBoard[dataBoard.length - 1 - i].data[i].value === turn);
-    //     }
-    //     if (result) {
-    //         for (let i = 0; i < dataBoard.length; i++) {
-    //             let temp = dataBoard;
-    //             temp[temp.length - 1 - i].data[i].className = 'btn-danger';
-    //             setDataBoard(temp);
-    //         }
-    //
-    //         return {
-    //             result: result,
-    //             turn: turn
-    //         };
-    //     }
-    //
-    //     for (let i = 0; i < dataBoard.length; i++) {
-    //         result = true;
-    //         for (let j = 0; j < dataBoard.length; j++) {      //dong
-    //             result = result && (dataBoard[i].data[j].value === turn);
-    //         }
-    //         if (result) {
-    //             for (let j = 0; j < dataBoard.length; j++) {
-    //                 let temp = dataBoard;
-    //                 temp[i].data[j].className = 'btn-danger';
-    //                 setDataBoard(temp);
-    //             }
-    //
-    //             return {
-    //                 result: result,
-    //                 turn: turn
-    //             };
-    //         }
-    //
-    //         result = true;
-    //         for (let j = 0; j < dataBoard.length; j++) {      //cot
-    //             result = result && (dataBoard[j].data[i].value === turn);
-    //         }
-    //         if (result) {
-    //             for (let j = 0; j < dataBoard.length; j++) {
-    //                 let temp = dataBoard;
-    //                 temp[j].data[i].className = 'btn-danger';
-    //                 setDataBoard(temp);
-    //             }
-    //             return {
-    //                 result: result,
-    //                 turn: turn
-    //             };
-    //         }
-    //     }
-    //
-    //     let checkDraw = true;
-    //     for (let i = 0; i < dataBoard.length; i++) {
-    //         for (let j = 0; j < dataBoard.length; j++) {
-    //             if (!dataBoard[i].data[j].value) checkDraw = false;
-    //         }
-    //     }
-    //     return checkDraw;
-    // }
 
     const checkWin = (turn, row, col) => {
         const sizeWin = 3;
@@ -327,11 +248,12 @@ const Board = (props) => {
             <div className="history">
                 {
                     history && history.length > 0
-                    ? <div>
+                        ? <div>
                             <button style={{marginRight: "10px"}}
-                                    onClick={sort}>Sắp xếp</button>
+                                    onClick={sort}>Sắp xếp
+                            </button>
                         </div>
-                    : ''
+                        : ''
                 }
 
                 {

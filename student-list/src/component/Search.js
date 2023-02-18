@@ -10,7 +10,7 @@ const Search = (props) => {
 
     const submit = () => {
         props.search(valueInput);
-    }
+    };
 
     return (
         <div className="flex-row">
