@@ -3,73 +3,61 @@ import Search from "./component/Search";
 import List from "./component/List";
 import FormInfo from "./component/FormInfo";
 import ButtonAction from "./component/ButtonAction";
-import React, {useState} from "react";
-import moment from "moment";
+import React, {useState, useEffect} from "react";
+import ApiService from './services/api';
+import formatDate from './utils/dateFormatter';
+import { mappingDepartment, mappingGender } from './constants.js/mapping';
 
 const App = () => {
-    const mappingGender = {
-        'male': 'Nam',
-        'female': 'Nữ'
-    }
-
-    const mappingDepartment = {
-        'kt': 'Kinh tế',
-        'nna': 'Ngôn ngữ Anh',
-        'nnhq': 'Ngôn ngữ Hàn Quốc',
-        'nnn': 'Ngôn ngữ Nhật',
-        'cntt': 'Công nghệ thông tin',
-        'ttdpt': 'Truyền thông đa phương tiện'
-    }
-
     const defaultDataTable = [
-        {
-            checked: false,
-            maSV: 'A12345',
-            tenSV: 'Trần Văn A',
-            ngaySinh: '11/05/2002',
-            gioiTinh: 'Nam',
-            khoa: 'Công nghệ thông tin'
-        },
-        {
-            checked: false,
-            maSV: 'A23456',
-            tenSV: 'Nguyễn Thị B',
-            ngaySinh: '06/07/2002',
-            gioiTinh: 'Nữ',
-            khoa: 'Ngôn ngữ Anh'
-        },
-        {
-            checked: false,
-            maSV: 'A34567',
-            tenSV: 'Nguyễn Văn C',
-            ngaySinh: '01/01/2002',
-            gioiTinh: 'Nam',
-            khoa: 'Truyền thông đa phương tiện'
-        },
-        {
-            checked: false,
-            maSV: 'A45678',
-            tenSV: 'Đặng Ngọc D',
-            ngaySinh: '02/06/2002',
-            gioiTinh: 'Nữ',
-            khoa: 'Kinh tế'
-        },
-        {
-            checked: false,
-            maSV: 'A56789',
-            tenSV: 'Nguyễn Tuấn E',
-            ngaySinh: '15/11/2002',
-            gioiTinh: 'Nam',
-            khoa: 'Ngôn ngữ Hàn Quốc'
-        },
-        {
-            checked: false,
-            maSV: 'A67890',
-            tenSV: 'Đinh Thị F',
-            ngaySinh: '11/12/2002',
-            gioiTinh: 'Nữ',
-            khoa: 'Ngôn ngữ Nhật'
-        },
+        // {
+        //     checked: false,
+        //     maSV: 'A12345',
+        //     tenSV: 'Trần Văn A',
+        //     ngaySinh: '11/05/2002',
+        //     gioiTinh: 'Nam',
+        //     khoa: 'Công nghệ thông tin'
+        // },
+        // {
+        //     checked: false,
+        //     maSV: 'A23456',
+        //     tenSV: 'Nguyễn Thị B',
+        //     ngaySinh: '06/07/2002',
+        //     gioiTinh: 'Nữ',
+        //     khoa: 'Ngôn ngữ Anh'
+        // },
+        // {
+        //     checked: false,
+        //     maSV: 'A34567',
+        //     tenSV: 'Nguyễn Văn C',
+        //     ngaySinh: '01/01/2002',
+        //     gioiTinh: 'Nam',
+        //     khoa: 'Truyền thông đa phương tiện'
+        // },
+        // {
+        //     checked: false,
+        //     maSV: 'A45678',
+        //     tenSV: 'Đặng Ngọc D',
+        //     ngaySinh: '02/06/2002',
+        //     gioiTinh: 'Nữ',
+        //     khoa: 'Kinh tế'
+        // },
+        // {
+        //     checked: false,
+        //     maSV: 'A56789',
+        //     tenSV: 'Nguyễn Tuấn E',
+        //     ngaySinh: '15/11/2002',
+        //     gioiTinh: 'Nam',
+        //     khoa: 'Ngôn ngữ Hàn Quốc'
+        // },
+        // {
+        //     checked: false,
+        //     maSV: 'A67890',
+        //     tenSV: 'Đinh Thị F',
+        //     ngaySinh: '11/12/2002',
+        //     gioiTinh: 'Nữ',
+        //     khoa: 'Ngôn ngữ Nhật'
+        // },
     ];
 
     const header = ['Mã SV', 'Tên sinh viên', 'Ngày sinh', 'Giới tính', 'Khoa', 'Hành động'];
@@ -80,14 +68,34 @@ const App = () => {
 
     const [status, setStatus] = useState('');
 
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        ApiService.get('/GetListStudent')
+            .then(response => {
+                setDataTable(() => {
+                    return response.map(i => {
+                        return {
+                            checked: false,
+                            ...i,
+                            ngaySinh: formatDate(i.ngaySinh)
+                        }
+                    })
+                });
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error(error);
+                setLoading(false);
+            });
+    }, []);
+
     const addItem = (data) => {
         setDataTable(() => {
             return [...dataTable, {
                 checked: false,
                 ...data,
-                gioiTinh: mappingGender[data.gioiTinh],
-                khoa: mappingDepartment[data.khoa],
-                ngaySinh: formatDate(data.ngaySinh)
             }]
         });
         setStatus('');
@@ -112,15 +120,6 @@ const App = () => {
         setStatus('');
     }
 
-    const formatDate = (value) => {
-        if (value && value.includes('-')) {
-            let temp = value.split("-");
-            let newDate = new Date(temp[0], temp[1] - 1, temp[2]);
-            return moment(+newDate.getTime()).format('DD/MM/YYYY');
-        }
-        return '';
-    }
-
     const handleEditItem = (data) => {
         setDataEdit(data);
         setStatus('edit');
@@ -143,21 +142,43 @@ const App = () => {
     };
 
     const handleSearch = (search) => {
-        let filter, tr, td, i, txtValue;
-        let table = document.getElementsByTagName('table')[0];
-        filter = search.toUpperCase();
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
+        // let filter, tr, td, i, txtValue;
+        // let table = document.getElementsByTagName('table')[0];
+        // filter = search.toUpperCase();
+        // tr = table.getElementsByTagName("tr");
+        // for (i = 0; i < tr.length; i++) {
+        //     td = tr[i].getElementsByTagName("td")[1];
+        //     if (td) {
+        //         txtValue = td.textContent || td.innerText;
+        //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //             tr[i].style.display = "";
+        //         } else {
+        //             tr[i].style.display = "none";
+        //         }
+        //     }
+        // }
+
+        const params = new URLSearchParams();
+        params.append('search', search);
+        
+        setLoading(true);
+        ApiService.get(`/GetListStudent?${params.toString()}`)
+        .then(response => {
+            setDataTable(() => {
+                return response.map(i => {
+                    return {
+                        checked: false,
+                        ...i,
+                        ngaySinh: formatDate(i.ngaySinh)
+                    }
+                })
+            });
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error(error);
+            setLoading(false);
+        });
     };
 
     const handleChangeChecked = (value) => {
@@ -174,6 +195,10 @@ const App = () => {
         });
     };
 
+    const back = () => {
+        setStatus('');
+    }
+
     return (
         <div className="App">
             {status ? <div className="form">
@@ -182,6 +207,7 @@ const App = () => {
                               editItem={editItem}
                               removeItem={handleRemoveItem}
                               status={status}
+                              back={back}
                               dataEdit={dataEdit}/>
                 </div>
                 : <>
@@ -191,6 +217,7 @@ const App = () => {
 
                     <div className="list">
                         <List dataTable={dataTable}
+                              loading={loading}
                               header={header}
                               checkbox={true}
                               editRow={handleEditItem}

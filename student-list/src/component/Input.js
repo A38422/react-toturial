@@ -12,6 +12,7 @@ const Input = (props) => {
                        name={props.name}
                        placeholder={props.placeholder}
                        onChange={props.onChange}
+                       onKeyDown={props.onKeyDown}
                        disabled={props.disabled}/>
                 <small className={props.classError}>{props.error}</small>
             </div>

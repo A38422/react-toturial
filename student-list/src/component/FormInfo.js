@@ -1,22 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import Input from "./Input";
-import moment from "moment";
+import formatDate from '../utils/dateFormatter';
+import ApiService from '../services/api';
+import {mappingDepartment, mappingGender, mappingGenderReverse, mappingDepartmentReverse} from '../constants.js/mapping';
 
 const FormInfo = (props) => {
-    const mappingGender = {
-        'Nam': 'male',
-        'Nữ': 'female'
-    }
-
-    const mappingDepartment = {
-        'Kinh tế': 'kt',
-        'Ngôn ngữ Anh': 'nna',
-        'Ngôn ngữ Hàn Quốc': 'nnhq',
-        'Ngôn ngữ Nhật': 'nnn',
-        'Công nghệ thông tin': 'cntt',
-        'Truyền thông đa phương tiện': 'ttdpt'
-    }
-
     const defaultFormData = {
         maSV: '',
         tenSV: '',
@@ -96,9 +84,18 @@ const FormInfo = (props) => {
         if (checkValidateForm()) {
             let checkUnique = props.dataTable.find(i => i.maSV.toLowerCase() === formData.maSV.toLowerCase());
             if (!checkUnique) {
-                props.addItem(formData);
-                setFormData(defaultFormData);
-                window.alert('Thêm thành công!');
+                ApiService.post('/CreateStudent', {
+                    ...formData,
+                    gioiTinh: mappingGender[formData.gioiTinh],
+                    khoa: mappingDepartment[formData.khoa]
+                }).then(response => {
+                    props.addItem(response);
+                    setFormData(defaultFormData);
+                    window.alert('Thêm thành công!');
+                }).catch(error => {
+                    console.error(error);
+                    window.alert('Có lỗi xảy ra!');
+                });
             } else {
                 window.alert('Mã sinh viên đã tồn tại!');
             }
@@ -107,32 +104,21 @@ const FormInfo = (props) => {
 
     const editItem = () => {
         if (checkValidateForm()) {
-            props.editItem(formData);
-            setFormData(defaultFormData);
-            setErrorInput(defaultErrorInput);
-            setDisables(defaultDisable);
-            window.alert('Cập nhật thành công!');
+            ApiService.put(`/UpdateStudent/${props.dataEdit.id}`, {
+                ...formData,
+                gioiTinh: mappingGender[formData.gioiTinh],
+                khoa: mappingDepartment[formData.khoa]
+            }).then(response => {
+                props.editItem(response);
+                setFormData(defaultFormData);
+                setErrorInput(defaultErrorInput);
+                setDisables(defaultDisable);
+                window.alert('Cập nhật thành công!');
+            }).catch(error => {
+                console.error(error);
+                window.alert('Có lỗi xảy ra!');
+            });
         }
-    }
-
-    const removeItem = () => {
-        if (window.confirm('Xác nhận xóa!')) {
-            props.removeItem(formData);
-            setFormData(defaultFormData);
-            setErrorInput(defaultErrorInput);
-            setDisables(defaultDisable);
-            document.getElementById('male').checked = false;
-            document.getElementById('female').checked = false;
-        }
-    }
-
-    const formatDate = (value) => {
-        if (value && value.includes('/')) {
-            let temp = value.split("/");
-            let newDate = new Date(temp[2], temp[1] - 1, temp[0]);
-            return moment(+newDate.getTime()).format('YYYY-MM-DD');
-        }
-        return '';
     }
 
     const handleSubmit = () => {
@@ -143,6 +129,10 @@ const FormInfo = (props) => {
         }
     }
 
+    const handleBack = () => {
+        props.back();
+    }
+
     useEffect(() => {
         if (props.dataEdit) {
             const data = props.dataEdit;
@@ -150,9 +140,9 @@ const FormInfo = (props) => {
                 return {
                     ...formData,
                     ...data,
-                    gioiTinh: mappingGender[data.gioiTinh],
+                    gioiTinh: mappingGenderReverse[data.gioiTinh],
                     ngaySinh: formatDate(data.ngaySinh),
-                    khoa: mappingDepartment[data.khoa]
+                    khoa: mappingDepartmentReverse[data.khoa]
                 }
             });
             setDisables(() => {
@@ -166,7 +156,7 @@ const FormInfo = (props) => {
             });
             setErrorInput(defaultErrorInput);
             if (data.gioiTinh) {
-                document.getElementById(mappingGender[data.gioiTinh]).checked = true;
+                document.getElementById(mappingGenderReverse[data.gioiTinh]).checked = true;
             }
         }
     }, [props.dataEdit])
@@ -242,6 +232,10 @@ const FormInfo = (props) => {
                         onClick={handleSubmit}>
                     Xác nhận
                 </button>
+                <button className='button-danger'
+                        onClick={handleBack}>
+                    Quay lại
+                </button>
             </div>
         </>
     )
@@ -250,6 +244,6 @@ const FormInfo = (props) => {
 FormInfo.defaultProps = {
     addItem: () => {},
     editItem: () => {},
-    removeItem: () => {}
+    back: () => {}
 }
 export default FormInfo;
