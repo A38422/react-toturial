@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Input from "./Input";
+import { useLocation } from 'react-router-dom';
 
 const Search = (props) => {
+    const location = useLocation();
+
     const [valueInput, setValueInput] = useState('');
 
     const handleChangeInput = (e) => {
@@ -17,6 +20,13 @@ const Search = (props) => {
             submit();
         }
     };
+
+    useEffect(() => {
+        const search = new URLSearchParams(location.search).get('query');
+        if (search) {
+            setValueInput(search);
+        }
+    }, [])
 
     return (
         <div className="flex-row">

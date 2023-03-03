@@ -32,6 +32,16 @@ const ApiService = {
         method: "DELETE",
         }).then((response) => response.json());
     },
+
+    deleteMultip(endpoint, data) {
+        return fetch(`${API_BASE_URL}${endpoint}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        }).then((response) => response.json());
+    },
 };
 
 export default ApiService;

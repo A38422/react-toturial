@@ -136,12 +136,17 @@ const FormInfo = (props) => {
     useEffect(() => {
         if (props.dataEdit) {
             const data = props.dataEdit;
+
+            const parts = data.ngaySinh.split('/');
+            const dateObject = new Date(parts[2], parts[1] - 1, parts[0]);
+            const dateValue = dateObject.toISOString().substring(0, 10);
+
             setFormData(() => {
                 return {
                     ...formData,
                     ...data,
                     gioiTinh: mappingGenderReverse[data.gioiTinh],
-                    ngaySinh: formatDate(data.ngaySinh),
+                    ngaySinh: dateValue,
                     khoa: mappingDepartmentReverse[data.khoa]
                 }
             });

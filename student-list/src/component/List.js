@@ -62,7 +62,7 @@ const List = (props) => {
                     ) : (
                         <tr>
                             <td colSpan="7" style={{ textAlign: 'center', height: "50px" }}>
-                                <i className="fa fa-spinner fa-spin"></i>Loading
+                                <i className="fa fa-spinner fa-spin mr-5"></i>Loading
                             </td>
                         </tr>
                     )}

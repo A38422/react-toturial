@@ -7,8 +7,13 @@ import React, {useState, useEffect} from "react";
 import ApiService from './services/api';
 import formatDate from './utils/dateFormatter';
 import { mappingDepartment, mappingGender } from './constants.js/mapping';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const App = () => {
+    const history = useHistory();
+
+    const location = useLocation();
+
     const defaultDataTable = [
         // {
         //     checked: false,
@@ -72,10 +77,15 @@ const App = () => {
 
     useEffect(() => {
         setLoading(true);
-        ApiService.get('/GetListStudent')
+
+        const search = new URLSearchParams(location.search).get('query');
+
+        const endpoint = search ? `/GetListStudent?search=${search}` : '/GetListStudent';
+
+        ApiService.get(endpoint)
             .then(response => {
                 setDataTable(() => {
-                    return response.map(i => {
+                    return response.items.map(i => {
                         return {
                             checked: false,
                             ...i,
@@ -89,13 +99,14 @@ const App = () => {
                 console.error(error);
                 setLoading(false);
             });
-    }, []);
+    }, [location]);
 
     const addItem = (data) => {
         setDataTable(() => {
             return [...dataTable, {
                 checked: false,
                 ...data,
+                ngaySinh: formatDate(data.ngaySinh)
             }]
         });
         setStatus('');
@@ -132,9 +143,24 @@ const App = () => {
     };
 
     const multiRemove = () => {
-        setDataTable(() => {
-            return dataTable.filter(i => !i.checked);
+        const checkedList = [];
+        dataTable.forEach(i => {
+            if (i.checked) {
+                checkedList.push(i.id);
+            }
         });
+
+        ApiService.deleteMultip('/DeleteMultipleStudents', checkedList)
+        .then(() => {
+            setDataTable(() => {
+                return dataTable.filter(i => !i.checked);
+            });
+        })
+        .catch(error => {
+            console.error(error);
+            window.alert('Có lỗi xảy ra');
+        });
+
     };
 
     const handleAdd = () => {
@@ -160,25 +186,8 @@ const App = () => {
 
         const params = new URLSearchParams();
         params.append('search', search);
-        
-        setLoading(true);
-        ApiService.get(`/GetListStudent?${params.toString()}`)
-        .then(response => {
-            setDataTable(() => {
-                return response.map(i => {
-                    return {
-                        checked: false,
-                        ...i,
-                        ngaySinh: formatDate(i.ngaySinh)
-                    }
-                })
-            });
-            setLoading(false);
-        })
-        .catch(error => {
-            console.error(error);
-            setLoading(false);
-        });
+
+        history.push(`/search?query=${search}`);
     };
 
     const handleChangeChecked = (value) => {
