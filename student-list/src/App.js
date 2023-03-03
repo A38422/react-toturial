@@ -6,7 +6,6 @@ import ButtonAction from "./component/ButtonAction";
 import React, {useState, useEffect} from "react";
 import ApiService from './services/api';
 import formatDate from './utils/dateFormatter';
-import { mappingDepartment, mappingGender } from './constants.js/mapping';
 import { useHistory, useLocation } from 'react-router-dom';
 
 const App = () => {

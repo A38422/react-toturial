@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Input from "./Input";
-import formatDate from '../utils/dateFormatter';
 import ApiService from '../services/api';
+import moment from 'moment';
 import {mappingDepartment, mappingGender, mappingGenderReverse, mappingDepartmentReverse} from '../constants.js/mapping';
 
 const FormInfo = (props) => {
@@ -105,11 +105,11 @@ const FormInfo = (props) => {
 
     const editItem = () => {
         const temp = { ...formData };
-        if (temp.checked === true || temp.checked === false) delete temp.checked;
+        delete temp.checked;
         
         if (checkValidateForm()) {
             ApiService.put(`/UpdateStudent/${props.dataEdit.id}`, {
-                ...formData,
+                ...temp,
                 gioiTinh: mappingGender[formData.gioiTinh],
                 khoa: mappingDepartment[formData.khoa]
             }).then(response => {
@@ -143,7 +143,7 @@ const FormInfo = (props) => {
 
             const parts = data.ngaySinh.split('/');
             const dateObject = new Date(parts[2], parts[1] - 1, parts[0]);
-            const dateValue = dateObject.toISOString().substring(0, 10);
+            const dateValue = moment(+dateObject.getTime()).format("YYYY-MM-DD");
 
             setFormData(() => {
                 return {
@@ -168,6 +168,7 @@ const FormInfo = (props) => {
                 document.getElementById(mappingGenderReverse[data.gioiTinh]).checked = true;
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.dataEdit])
 
     return (
