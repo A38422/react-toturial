@@ -6,6 +6,7 @@ import {mappingDepartment, mappingGender, mappingGenderReverse, mappingDepartmen
 
 const FormInfo = (props) => {
     const defaultFormData = {
+        id: '',
         maSV: '',
         tenSV: '',
         ngaySinh: '',
@@ -82,7 +83,7 @@ const FormInfo = (props) => {
 
     const addItem = () => {
         if (checkValidateForm()) {
-            let checkUnique = props.dataTable.find(i => i.maSV.toLowerCase() === formData.maSV.toLowerCase());
+            let checkUnique = props.dataTable.find(i => i.id === formData.id);
             if (!checkUnique) {
                 ApiService.post('/CreateStudent', {
                     ...formData,
@@ -103,6 +104,9 @@ const FormInfo = (props) => {
     }
 
     const editItem = () => {
+        const temp = { ...formData };
+        if (temp.checked === true || temp.checked === false) delete temp.checked;
+        
         if (checkValidateForm()) {
             ApiService.put(`/UpdateStudent/${props.dataEdit.id}`, {
                 ...formData,

@@ -115,12 +115,12 @@ const App = () => {
     const editItem = (data) => {
         setDataTable(() => {
             return dataTable.map(i => {
-                if (i.maSV === data.maSV) {
+                if (i.id === data.id) {
                     return {
                         checked: false,
                         ...data,
-                        gioiTinh: mappingGender[data.gioiTinh],
-                        khoa: mappingDepartment[data.khoa],
+                        gioiTinh: data.gioiTinh,
+                        khoa: data.khoa,
                         ngaySinh: formatDate(data.ngaySinh)
                     };
                 }
@@ -138,7 +138,7 @@ const App = () => {
 
     const handleRemoveItem = (data) => {
         setDataTable(() => {
-            return dataTable.filter(i => i.maSV !== data.maSV);
+            return dataTable.filter(i => i.id !== data.id);
         });
     };
 
@@ -168,32 +168,20 @@ const App = () => {
     };
 
     const handleSearch = (search) => {
-        // let filter, tr, td, i, txtValue;
-        // let table = document.getElementsByTagName('table')[0];
-        // filter = search.toUpperCase();
-        // tr = table.getElementsByTagName("tr");
-        // for (i = 0; i < tr.length; i++) {
-        //     td = tr[i].getElementsByTagName("td")[1];
-        //     if (td) {
-        //         txtValue = td.textContent || td.innerText;
-        //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        //             tr[i].style.display = "";
-        //         } else {
-        //             tr[i].style.display = "none";
-        //         }
-        //     }
-        // }
-
         const params = new URLSearchParams();
         params.append('search', search);
 
-        history.push(`/search?query=${search}`);
+        if (search) {
+            history.push(`/search?query=${search}`);
+        } else {
+            history.push('/');
+        }
     };
 
     const handleChangeChecked = (value) => {
         setDataTable(() => {
             return dataTable.map(i => {
-                if (value.maSV === i.maSV) {
+                if (value.id === i.id) {
                     return {
                         ...i,
                         checked: !i.checked,
